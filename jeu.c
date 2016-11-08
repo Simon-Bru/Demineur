@@ -13,7 +13,7 @@ void startGame(int lon, int larg){
     t_plateau *plateau = setPlateau(lon, larg);
     afficher_plateau(plateau);
 
-    ///------------------------ INITIALISATION DES CASE ------------------------------\\\
+    ///------------------------ INITIALISATION DES CASES ------------------------------\\\
 
 
     ///------------------------ INITIALISATION DES EVENEMENTS -----------------------\\\
@@ -30,10 +30,11 @@ void mainMenu(){
     /// MESSAGE DACCUEIL
     printf(" /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\--- DEMINEUR ---/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ \n\n\n\n");
     /// CHOIX
-    printf("Veuillez choisir l'action:\n1 - Facile\n2 - Moyen\n3 - Difficile\n4 - Quitter\n\n");
+    printf("Veuillez choisir l'action:\n1 - Facile\n2 - Moyen\n3 - Difficile\n4 - Personnalisé\n\n");
 
     char entree[2];
     int choix = 0;
+    int i, dimensions[2], mines;
     while(choix == 0){
         printf("No de choix:");
         choix = 0;
@@ -62,7 +63,50 @@ void mainMenu(){
                     break;
                 case 4:
                     ///PERSONNALISE
+                    printf("Personnalisation du plateau et du nombre de mines\n");
+                    for(i=0; i<3; i++){
+                        choix = 0;
 
+                        switch(i){
+                            case 0:
+                                printf("\nEntrez la longueur du plateau choisie: ");
+                                break;
+                            case 1:
+                                printf("\nEntrez la largeur du plateau choisie: ");
+                                break;
+                            case 2:
+                                printf("\nEntrez le nombre de mines choisi: ");
+                                break;
+                        }
+
+                        while(choix==0){
+                            /// ON RECUPERE L'ENTREE COMME UNE CHAINE DEPUIS LE CHAMPS DE LA CONSOLE
+                            fgets(entree, sizeof(choix), stdin);
+                            /// ON LE CONVERTI EN ENTIER GRACE A UNE FONCTION DEDIEE
+                            sscanf(entree, "%d", &choix);
+                            if(i < 2){
+                               if(choix > 5 && choix < 100){
+                                    dimensions[i] = choix;
+                                }
+                                else {
+                                    choix = 0;
+                                    printf("Veuillez entrer un nombre entre 5 et 100: ");
+                                }
+                            }
+                            else {
+                                if(choix > 5 && choix < ((dimensions[0]*dimensions[1])-5)){
+                                    mines = choix;
+                                }
+                                else {
+                                    choix = 0;
+                                    printf("Veuillez entrer un nombre entre 5 et %d: ", (dimensions[0]*dimensions[1])-5);
+
+                                }
+                            }
+                        }
+                    }
+
+                    startGame(dimensions[0], dimensions[1]);
                     break;
                 default:
                     /// L'ENTIER N'EST NI 1 NI 2 NI 3, ON DEMADE DE LE RE-ENTRER
