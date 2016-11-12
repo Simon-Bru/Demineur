@@ -46,7 +46,7 @@ void initBombes(t_case*** case_tab[], int lon, int larg, int bombs){
         /// ON GENERE DEUX NOMBRES ENTRE 0 ET LA LONGUEUR/LARGEUR MAX
         x = rand()%lon;
         y = rand()%larg;
-        printf("x:%d, y:%d\n", x, y);
+
         /// ON REDEFINI L'INDICE DE LA CASE CORRESPONDANT AUX NOMBRES RANDOM
         setBombe(case_tab[x][y]);
 
@@ -63,7 +63,6 @@ void initBombes(t_case*** case_tab[], int lon, int larg, int bombs){
             /// ON PARCOURT LES ORDONNEES DE BAS EN HAUT
             for(addY=minY; addY <= maxY; addY++){
                 /// ON RAJOUTE 1 A L'INDICE DE LA CASE VOISINE
-                //int ind = case_tab[x+addX][y+addY][0]->indice++;
                 if(!(addX == 0 && addY == 0))
                     incrementIndice(case_tab[x+addX][y+addY]);
             }
