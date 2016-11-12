@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
+#include "case.h"
 #include "plateau.h"
 #include "jeu.h"
-#include "case.h"
 
 /// MENU PRINCIPAL
 int main()
