@@ -8,10 +8,10 @@ void gotoligcol( COORD *curseur , int lig, int col);
 void mainMenu();
 
 ///FONCTION DE DEMMARRAGE DE LA PARTIE
-void startGame(int lon, int larg);
+void startGame(int lon, int larg, int bomb_nb);
 
 /// FONCTION D'INITIALISATION DES EVENEMENTS A L'APPUI DES TOUCHES
-void initKeys(t_plateau *plateau);
+void initKeys(t_plateau *plateau, t_case*** case_tab);
 
 #include "jeu.c"
 #endif // JEU_H_INCLUDED

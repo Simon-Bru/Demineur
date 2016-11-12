@@ -7,18 +7,19 @@ void gotoligcol( COORD *curseur , int lig, int col)
 }
 
 /// FONCTION D'INITIALISATION DU PLATEAU
-void startGame(int lon, int larg){
+void startGame(int lon, int larg, int bomb_nb){
     ///-----------------------  INITIALISATION DU PLATEAU ----------------\\\
 
     t_plateau *plateau = setPlateau(lon, larg);
     afficher_plateau(plateau);
 
     ///------------------------ INITIALISATION DES CASES ------------------------------\\\
-
+    //Création de la matrice de cases
+    t_case*** case_tab = getCases(lon, larg, bomb_nb);
 
     ///------------------------ INITIALISATION DES EVENEMENTS -----------------------\\\
 
-    initKeys(plateau);
+    initKeys(plateau, case_tab);
 
 }
 
@@ -51,15 +52,15 @@ void mainMenu(){
             switch(choix){
                 case 1:
                     /// DEBUT D'UNE PARTIE EN FACILE
-                    startGame(8, 8);
+                    startGame(8, 8, 10);
                     break;
                 case 2:
                     /// MOYEN
-                    startGame(15, 15);
+                    startGame(15, 15, 45);
                     break;
                 case 3:
                     /// DIFFICILE
-                    startGame(20, 20);
+                    startGame(20, 20, 80);
                     break;
                 case 4:
                     ///PERSONNALISE
@@ -106,7 +107,7 @@ void mainMenu(){
                         }
                     }
 
-                    startGame(dimensions[0], dimensions[1]);
+                    startGame(dimensions[0], dimensions[1], mines);
                     break;
                 default:
                     /// L'ENTIER N'EST NI 1 NI 2 NI 3, ON DEMADE DE LE RE-ENTRER
@@ -122,7 +123,7 @@ void mainMenu(){
     }
 }
 
-void initKeys(t_plateau *plateau){
+void initKeys(t_plateau *plateau, t_case*** case_tab){
     ///ON INITIALISE LA CLE TAPE AU CLAVIER
     int key = 0;
     COORD *curPos = malloc(sizeof(COORD));
@@ -166,10 +167,15 @@ void initKeys(t_plateau *plateau){
 
                 case 32:
                     /// TOUCHE ESPACE - AJOUT D'UN DRAPEAU
+                    addFlag(case_tab[curPos->X/2][curPos->Y/2]);
+                    char flag = 207;
+                    printf("%c", flag);
+                    gotoligcol(curPos, curPos->X-1, curPos->Y);
                     break;
 
                 case 13:
                     /// TOUCHE ENTREE - DECOUVERTE DE LA CASE
+
                     break;
             }
         }
