@@ -1,8 +1,8 @@
 /// FONCTION DE DEPLACEMENT DU CURSEUR
 void gotoligcol( COORD *curseur , int lig, int col)
 {
-    curseur->X = curseur->X != lig ? lig+1 : curseur->X;
-    curseur->Y = curseur->Y != col ? col+1 : curseur->Y;
+    curseur->X = lig;
+    curseur->Y = col;
     SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), *curseur );
 }
 
@@ -16,6 +16,18 @@ void startGame(int lon, int larg, int bomb_nb){
     ///------------------------ INITIALISATION DES CASES ------------------------------\\\
     //Création de la matrice de cases
     t_case*** case_tab = getCases(lon, larg, bomb_nb);
+
+    /// Boucle permettant la vérification des cases
+    int i,j;
+    for(i=0; i<plateau->col; i++){
+        for(j=0; j<plateau->lig; j++){
+            if(case_tab[i][j]->indice == -1)
+                printf("B ");
+            else
+                printf("%d ", case_tab[i][j]->indice);
+        }
+        printf("\n");
+    }
 
     ///------------------------ INITIALISATION DES EVENEMENTS -----------------------\\\
 
@@ -127,10 +139,13 @@ void initKeys(t_plateau *plateau, t_case*** case_tab){
     ///ON INITIALISE LA CLE TAPE AU CLAVIER
     int key = 0;
     COORD *curPos = malloc(sizeof(COORD));
-    gotoligcol(curPos, 0, 0);
+    gotoligcol(curPos, 1, 1);
 
-    /// TANT QUE L'UTILISATEUR NE TAPE PAS Q
-    while(key != 113){
+    /// On initialise des entiers utilisés pour stocker la position actuelle lors d'affichages
+    int posX, posY;
+
+
+     while(key != 113){
 
         /// ON ECOUTE L'APPUI SUR UNE TOUCHE DU CLAVIER
         if(kbhit()){
@@ -143,39 +158,51 @@ void initKeys(t_plateau *plateau, t_case*** case_tab){
                 case 72:
                     /// TOUCHE FLECHE DU HAUT
                     if(curPos->Y > 1){
-                        gotoligcol(curPos, curPos->X, (curPos->Y-3));
+                        gotoligcol(curPos, curPos->X, (curPos->Y-2));
                     }
                     break;
                 case 75:
                     ///TOUCHE FLECHE DE GAUCHE
                     if(curPos->X > 1){
-                       gotoligcol(curPos, curPos->X-3, curPos->Y);
+                       gotoligcol(curPos, curPos->X-2, curPos->Y);
                     }
                     break;
                 case 77:
                     ///TOUCHE FLECHE DE DROITE
                     if(curPos->X < plateau->col*2-1){
-                        gotoligcol(curPos, curPos->X+1, curPos->Y);
+                        gotoligcol(curPos, curPos->X+2, curPos->Y);
                     }
                     break;
                 case 80:
                     ///TOUCHE FLECHE DU BAS
                     if(curPos->Y < plateau->lig*2-1){
-                       gotoligcol(curPos, curPos->X, curPos->Y+1);
+                       gotoligcol(curPos, curPos->X, curPos->Y+2);
                     }
                     break;
 
                 case 32:
                     /// TOUCHE ESPACE - AJOUT D'UN DRAPEAU
-                    addFlag(case_tab[curPos->X/2][curPos->Y/2]);
-                    char flag = 207;
-                    printf("%c", flag);
-                    gotoligcol(curPos, curPos->X-1, curPos->Y);
+                    /// On vérifie que la case n'est pas découverte
+                    if(case_tab[curPos->X/2][curPos->Y/2]->vu == 0){
+                        int flagged = addFlag(case_tab[curPos->X/2][curPos->Y/2]);
+                        char flag = flagged ? 207 : 0;
+                        printf("%c", flag);
+                        gotoligcol(curPos, curPos->X, curPos->Y);
+                    }
                     break;
 
                 case 13:
                     /// TOUCHE ENTREE - DECOUVERTE DE LA CASE
 
+                    /// On stocke les coordonnées initiales de la position du curseur
+                    posX = curPos->X;
+                    posY = curPos->Y;
+
+                    /// On appelle la fonction d'affichage qui gère également l'affichage des voisins d'une case vide
+                    printCase(case_tab, curPos, plateau);
+
+                    /// On place le curseur à sa position initiale
+                    gotoligcol(curPos, posX, posY);
                     break;
             }
         }
