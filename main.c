@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
-#include "case.h"
+#include <unistd.h>
 #include "plateau.h"
+#include "case.h"
 #include "jeu.h"
 
 /// MENU PRINCIPAL
