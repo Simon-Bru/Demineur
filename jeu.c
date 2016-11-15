@@ -183,8 +183,8 @@ void initKeys(t_plateau *plateau, t_case*** case_tab){
                 case 32:
                     /// TOUCHE ESPACE - AJOUT D'UN DRAPEAU
                     /// On vérifie que la case n'est pas découverte
-                    if(case_tab[curPos->X/2][curPos->Y/2]->vu == 0){
-                        int flagged = addFlag(case_tab[curPos->X/2][curPos->Y/2]);
+                    if(case_tab[curPos->Y/2][curPos->X/2]->vu == 0){
+                        int flagged = addFlag(case_tab[curPos->Y/2][curPos->X/2]);
                         char flag = flagged ? 207 : 0;
                         printf("%c", flag);
                         gotoligcol(curPos, curPos->X, curPos->Y);
