@@ -12,13 +12,18 @@ t_case* setCase(int ind) {
 }
 
 /// FONCTION D'AJOUT DE DRAPEAU
-void addFlag(t_case* cas) {
-    cas->flag = 1;
+int addFlag(t_case* cas) {
+    /// Si le drapeau est déjà attribué, on le supprime (0), sinon, on le rajoute (1)
+    cas->flag = cas->flag ? 0 : 1;
+    /// On retourne l'état du drapeau
+    return cas->flag;
 }
 
 /// FONCTION D'INCREMENTATION D'INDICE
 void incrementIndice(t_case* cas){
-    cas->indice++;
+    if(cas->indice >= 0){
+        cas->indice++;
+    }
 }
 
 /// FONCTION DE DEFINITION DE BOMBE
@@ -26,18 +31,78 @@ void setBombe(t_case* cas){
     cas->indice = -1;
 }
 
+/// FONCTION DE VERIFICATION SI LA CASE EST BOMBE OU NON
+int isBomb(t_case* cas){
+    return cas->indice == -1;
+}
+
 /// FONCTION DE DECOUVERTE DE CASE
-/*
-void seeCase(t_case* case_tab, COORD* pos){
-    t_case* curCase = case_tab[(pos->X-1)/2][(pos->Y-1)/2];
-    curCase->vu = 1;
-    if(curCase->indice > 0){
-        printf("%d", curCase->indice);
+void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
+    /// On inverse x et y car la 1ere dimension représente les lignes->Ordonnées(Y) et la 2ème les colonnes->abscisses(X)
+    t_case* cas = case_tab[pos->Y/2][pos->X/2];
+
+    /// Si la case n'a pas encore été découverte
+    if(!cas->vu){
+
+        /// On définit son attribut comme vu
+        cas->vu = 1;
+
+        /// Si cette case n'est pas une bombe
+        if(cas->indice >= 0){
+            /// On affiche son indice
+            printf("%d", cas->indice);
+
+            /// Si cette case est un zéro
+            if(cas->indice == 0){
+                /// On découvre ses voisins grâce à la fonction dédiée
+                decouvrirVoisins(case_tab, pos, plateau);
+            }
+        }
+        else {
+            /// Si c'est une bombe, la partie est perdue, on découvre la grille et on affiche la défaite
+            printf("B");
+            gotoligcol(pos, pos->X-1, pos->Y);
+        }
     }
-    else {
-        printf("boum");
+}
+
+/// FONCTION DE DECOUVERTE DES VOISINS D'UN ZERO
+int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau){
+    int i, j, minX, maxX, minY, maxY, curX, curY, x, y;
+    /// On stocke les coordonnées de la position initiale
+    curX = pos->X;
+    curY = pos->Y;
+
+    /// Selon la position du curseur, on définit les bornes des boucles qui vont permettre
+    /// de parcourir le contour de la case courante
+    minX = curX/2==0 ? 0 : -1;
+    maxX = curX/2==plateau->col-1 ? 0 : 1;
+    minY = curY/2==0 ? 0 : -1;
+    maxY = curY/2==plateau->lig-1 ? 0 : 1;
+
+    /// On initialise les boucles selon les bornes définies
+    for(i=minX; i <= maxX; i++){
+        for(j=minY; j <= maxY; j++){
+            /// On vérifie que la case ne soit pas celle dont on découvre les voisins
+            if(!(i == 0 && j == 0)){
+                /// On définit les indices de la case selon la position courante et le passage dans la boucle
+                y = curY/2+j;
+                x = curX/2+i;
+
+                /// On stocke cette case
+                t_case* curCase = case_tab[y][x];
+                /// Si celle-ci n'est pas une bombe et n'est pas encore découverte
+                if(!isBomb(curCase) && !curCase->vu){
+                    /// On déplace le curseur dans la case en question
+                    gotoligcol(pos, curX+(i*2), curY+(j*2));
+                    /// On affiche son indice grâce à la fonction destinée, qui va permettre la découverte récursive
+                    /// Si la case en question est un zéro
+                    printCase(case_tab, pos, plateau);
+                }
+            }
+        }
     }
-}*/
+}
 
 /// FONCTION D'INITIALISATION DES BOMBES ALEATOIRES
 void initBombes(t_case*** case_tab[], int lon, int larg, int bombs){
@@ -46,6 +111,11 @@ void initBombes(t_case*** case_tab[], int lon, int larg, int bombs){
         /// ON GENERE DEUX NOMBRES ENTRE 0 ET LA LONGUEUR/LARGEUR MAX
         x = rand()%lon;
         y = rand()%larg;
+        while(isBomb(case_tab[x][y])){
+            x = rand()%lon;
+            y = rand()%larg;
+        }
+
 
         /// ON REDEFINI L'INDICE DE LA CASE CORRESPONDANT AUX NOMBRES RANDOM
         setBombe(case_tab[x][y]);

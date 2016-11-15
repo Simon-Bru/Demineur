@@ -14,13 +14,22 @@ typedef struct Case
 t_case* setCase(int ind);
 
 /// FONCTION D'AJOUT DE DRAPEAU
-void addFlag(t_case* cas);
+int addFlag(t_case* cas);
 
 /// FONCTION D'INCREMENTATION D'INDICE
 void incrementIndice(t_case* cas);
 
 /// FONCTION DE DEFINITION DE BOMBE (remplacement de l'indice par -1)
 void setBombe(t_case* cas);
+
+/// FONCTION DE VERIFICATION SI LA CASE EST BOMBE OU NON
+int isBomb(t_case* cas);
+
+/// FONCTION DE DECOUVERTE DE CASE
+void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau);
+
+/// FONCTION DE DECOUVERTE DES VOISINS D'UN ZERO
+int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau);
 
 /// FONCTION D'INITIALISATION DES BOMBES ALEATOIRES
 void initBombes(t_case*** case_tab[], int lon, int larg, int bombs);
