@@ -11,7 +11,7 @@
 int main()
 {
     /// Initialisation de la graine utilisée lors de l'appel à rand() afin de générer un nombre aléatoire en fonction du temps
-    srand(time(0));
+    srand(time(NULL));
 
     mainMenu();
 }
