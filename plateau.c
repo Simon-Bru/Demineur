@@ -18,7 +18,6 @@ t_plateau* setPlateau( int longueur, int largeur)
 void afficher_plateau(t_plateau *P){
     ///On efface le contenu de la console
     system("cls");
-
     int i, j;
     char lig, col;
     /*char alphabet[26] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
