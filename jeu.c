@@ -3,7 +3,7 @@ t_partie* setPartie(int bombs, int cases){
     t_partie* partie = (t_partie*)malloc(sizeof(t_partie));
 
     partie->bomb_nb = bombs;
-    partie->case_restante = cases;
+    partie->cases_restante = cases;
     return partie;
 }
 
@@ -191,7 +191,16 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
     /// On crée une variable pour la case sur laquelle l'utilisateur est positionné
     t_case* curCase = case_tab[0][0];
 
-     while(key != 113){
+    /// On initialise un booleen pour la fin de la partie
+    int fini = 0;
+
+     while(key != 113 && !fini){
+
+        ///On vérifie que toutes les cases ne sont pas découvertes
+        if(partie->cases_restante == partie->bomb_nb){
+            printf("VICTOIRE");
+            fini = 1;
+        }
 
         /// ON ECOUTE L'APPUI SUR UNE TOUCHE DU CLAVIER
         if(kbhit()){
@@ -255,8 +264,18 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
                     posX = curPos->X;
                     posY = curPos->Y;
 
-                    /// On appelle la fonction d'affichage qui gère également l'affichage des voisins d'une case vide
-                    printCase(case_tab, curPos, plateau);
+                    /// Si cette case n'est pas une bombe
+                    if(!isBomb(curCase)){
+                        /// On appelle la fonction d'affichage qui gère également l'affichage des voisins d'une case vide
+                        printCase(case_tab, curPos, plateau, &partie->cases_restante);
+                    }
+                    else {
+                        /// Sinon on affiche la défaite
+                        //printf("DEFAITE");
+                        fini = 1;
+                        /// On révèle la grille
+                        revelerGrille(case_tab, plateau, &partie->cases_restante);
+                    }
 
                     /// On place le curseur à sa position initiale
                     placer_curseur(curPos, posX, posY);

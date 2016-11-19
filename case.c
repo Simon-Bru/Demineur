@@ -37,7 +37,7 @@ int isBomb(t_case* cas){
 }
 
 /// FONCTION DE DECOUVERTE DE CASE
-void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
+void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_restantes){
     /// On inverse x et y car la 1ere dimension représente les lignes->Ordonnées(Y) et la 2ème les colonnes->abscisses(X)
     t_case* cas = case_tab[pos->Y/2][pos->X/2];
 
@@ -47,27 +47,31 @@ void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
         /// On définit son attribut comme vu
         cas->vu = 1;
 
+        /// On décremente le nombre de cases restantes de notre partie
+        *cases_restantes = *cases_restantes-1;
+
         /// Si cette case n'est pas une bombe
-        if(cas->indice >= 0){
+        if(!isBomb(cas)){
             /// On affiche son indice
             printf("%d", cas->indice);
 
             /// Si cette case est un zéro
             if(cas->indice == 0){
                 /// On découvre ses voisins grâce à la fonction dédiée
-                decouvrirVoisins(case_tab, pos, plateau);
+                decouvrirVoisins(case_tab, pos, plateau, cases_restantes);
             }
         }
         else {
-            /// Si c'est une bombe, la partie est perdue, on découvre la grille et on affiche la défaite
-            printf("B");
+            /// Si c'est une bombe, on affiche une bombe
+            char bomb = 4;
+            printf("%c", bomb);
             placer_curseur(pos, pos->X-1, pos->Y);
         }
     }
 }
 
 /// FONCTION DE DECOUVERTE DES VOISINS D'UN ZERO
-int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau){
+int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_restantes){
     int i, j, minX, maxX, minY, maxY, curX, curY, x, y;
     /// On stocke les coordonnées de la position initiale
     curX = pos->X;
@@ -97,7 +101,7 @@ int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau){
                     placer_curseur(pos, curX+(i*2), curY+(j*2));
                     /// On affiche son indice grâce à la fonction destinée, qui va permettre la découverte récursive
                     /// Si la case en question est un zéro
-                    printCase(case_tab, pos, plateau);
+                    printCase(case_tab, pos, plateau, cases_restantes);
                 }
             }
         }
@@ -167,3 +171,22 @@ t_case*** getCases(int lon, int larg, int bombs) {
 
     return case_tab;
 }
+
+void revelerGrille(t_case*** case_tab, t_plateau* plateau, int* cases_restantes){
+    int i, j;
+    for(i=0; i<plateau->col*2; i+2){
+        for(j=0; j<plateau->lig*2; j+2){
+            if(*cases_restantes > 0){
+                COORD* pos;
+                pos->X = i;
+                pos->Y = j;
+                printCase(case_tab, pos, plateau, cases_restantes);
+            }
+            else {
+                break;
+            }
+        }
+        printf("\n");
+    }
+}
+

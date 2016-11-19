@@ -5,7 +5,7 @@
 
 typedef struct Partie {
     int bomb_nb;
-    int case_restante;
+    int cases_restante;
 }t_partie;
 
 /// FONCTION CONSTRUCTRICE DE STRUCT PARTIE

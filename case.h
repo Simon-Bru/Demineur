@@ -26,10 +26,10 @@ void setBombe(t_case* cas);
 int isBomb(t_case* cas);
 
 /// FONCTION DE DECOUVERTE DE CASE
-void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau);
+void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_restantes);
 
 /// FONCTION DE DECOUVERTE DES VOISINS D'UN ZERO
-int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau);
+int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_restantes);
 
 /// FONCTION D'INITIALISATION DES BOMBES ALEATOIRES
 void initBombes(t_case*** case_tab[], int lon, int larg, int bombs);
