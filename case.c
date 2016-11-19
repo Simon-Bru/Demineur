@@ -13,9 +13,9 @@ t_case* setCase(int ind) {
 
 /// FONCTION D'AJOUT DE DRAPEAU
 int addFlag(t_case* cas) {
-    /// Si le drapeau est dÈj‡ attribuÈ, on le supprime (0), sinon, on le rajoute (1)
+    /// Si le drapeau est d√©j√† attribu√©, on le supprime (0), sinon, on le rajoute (1)
     cas->flag = cas->flag ? 0 : 1;
-    /// On retourne l'Ètat du drapeau
+    /// On retourne l'√©tat du drapeau
     return cas->flag;
 }
 
@@ -38,13 +38,13 @@ int isBomb(t_case* cas){
 
 /// FONCTION DE DECOUVERTE DE CASE
 void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
-    /// On inverse x et y car la 1ere dimension reprÈsente les lignes->OrdonnÈes(Y) et la 2Ëme les colonnes->abscisses(X)
+    /// On inverse x et y car la 1ere dimension repr√©sente les lignes->Ordonn√©es(Y) et la 2√®me les colonnes->abscisses(X)
     t_case* cas = case_tab[pos->Y/2][pos->X/2];
 
-    /// Si la case n'a pas encore ÈtÈ dÈcouverte
-    if(!cas->vu){
+    /// Si la case n'a pas encore √©t√© d√©couverte et qu'elle n'a pas de drapeau
+    if(!cas->vu && !cas->flag){
 
-        /// On dÈfinit son attribut comme vu
+        /// On d√©finit son attribut comme vu
         cas->vu = 1;
 
         /// Si cette case n'est pas une bombe
@@ -52,16 +52,16 @@ void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
             /// On affiche son indice
             printf("%d", cas->indice);
 
-            /// Si cette case est un zÈro
+            /// Si cette case est un z√©ro
             if(cas->indice == 0){
-                /// On dÈcouvre ses voisins gr‚ce ‡ la fonction dÈdiÈe
+                /// On d√©couvre ses voisins gr√¢ce √† la fonction d√©di√©e
                 decouvrirVoisins(case_tab, pos, plateau);
             }
         }
         else {
-            /// Si c'est une bombe, la partie est perdue, on dÈcouvre la grille et on affiche la dÈfaite
+            /// Si c'est une bombe, la partie est perdue, on d√©couvre la grille et on affiche la d√©faite
             printf("B");
-            gotoligcol(pos, pos->X-1, pos->Y);
+            placer_curseur(pos, pos->X-1, pos->Y);
         }
     }
 }
@@ -69,34 +69,34 @@ void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau){
 /// FONCTION DE DECOUVERTE DES VOISINS D'UN ZERO
 int decouvrirVoisins (t_case*** case_tab, COORD* pos, t_plateau* plateau){
     int i, j, minX, maxX, minY, maxY, curX, curY, x, y;
-    /// On stocke les coordonnÈes de la position initiale
+    /// On stocke les coordonn√©es de la position initiale
     curX = pos->X;
     curY = pos->Y;
 
-    /// Selon la position du curseur, on dÈfinit les bornes des boucles qui vont permettre
+    /// Selon la position du curseur, on d√©finit les bornes des boucles qui vont permettre
     /// de parcourir le contour de la case courante
     minX = curX/2==0 ? 0 : -1;
     maxX = curX/2==plateau->col-1 ? 0 : 1;
     minY = curY/2==0 ? 0 : -1;
     maxY = curY/2==plateau->lig-1 ? 0 : 1;
 
-    /// On initialise les boucles selon les bornes dÈfinies
+    /// On initialise les boucles selon les bornes d√©finies
     for(i=minX; i <= maxX; i++){
         for(j=minY; j <= maxY; j++){
-            /// On vÈrifie que la case ne soit pas celle dont on dÈcouvre les voisins
+            /// On v√©rifie que la case ne soit pas celle dont on d√©couvre les voisins
             if(!(i == 0 && j == 0)){
-                /// On dÈfinit les indices de la case selon la position courante et le passage dans la boucle
+                /// On d√©finit les indices de la case selon la position courante et le passage dans la boucle
                 y = curY/2+j;
                 x = curX/2+i;
 
                 /// On stocke cette case
                 t_case* curCase = case_tab[y][x];
-                /// Si celle-ci n'est pas une bombe et n'est pas encore dÈcouverte
+                /// Si celle-ci n'est pas une bombe et n'est pas encore d√©couverte
                 if(!isBomb(curCase) && !curCase->vu){
-                    /// On dÈplace le curseur dans la case en question
-                    gotoligcol(pos, curX+(i*2), curY+(j*2));
-                    /// On affiche son indice gr‚ce ‡ la fonction destinÈe, qui va permettre la dÈcouverte rÈcursive
-                    /// Si la case en question est un zÈro
+                    /// On d√©place le curseur dans la case en question
+                    placer_curseur(pos, curX+(i*2), curY+(j*2));
+                    /// On affiche son indice gr√¢ce √† la fonction destin√©e, qui va permettre la d√©couverte r√©cursive
+                    /// Si la case en question est un z√©ro
                     printCase(case_tab, pos, plateau);
                 }
             }
