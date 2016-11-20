@@ -68,7 +68,7 @@ void afficher_plateau(t_plateau *P){
                 }
                 else {
                     /// LIGNE VERTICALE OU ESPACE
-                    lig = j%2 == 0 ? 186 : 0;
+                    lig = j%2 == 0 ? 186 : 219;
                 }
             }
             /// ON AFFICHE LE CARACTERE DETERMINE
