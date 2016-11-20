@@ -23,6 +23,21 @@ void afficher_instructions(int bomb_nb);
 /// FONCTION DE MISE A JOUR DU NOMBRE DE BOMBES
 void maj_bombes(t_plateau* plateau, int bomb_nb);
 
+/// FONCTION D'AFFICHAGE DE DRAPEAU
+void printFlag(int flagged, int* cp_flags, t_plateau* plateau, t_partie* partie);
+
+/// FONCTION DE CONVERSION DE CHAINE DE CARACTERES EN ENTIER
+int charToInt(char* str);
+
+/// FONCTION DE SUPPRESSION DU DRAPEAU DANS LE TABLEAU
+void removeFlagFromTab(COORD* curPos, COORD* flag_tab, int cp_flags);
+
+/// FONCTION DE VALIDATION DES DRAPEAUX
+int validation(COORD* flag_tab, t_case*** case_tab[], int taille);
+
+/// FONCTION D'AFFICHAGE DE LA DEFAITE
+void defaite(COORD* curPos, t_plateau* plateau);
+
 ///FONCTION DE DEMARRAGE DU JEU
 void mainMenu();
 
