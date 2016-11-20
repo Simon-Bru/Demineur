@@ -57,8 +57,8 @@ void printFlag(int flagged, int* cp_flags, t_plateau* plateau, t_partie* partie)
 void recommencer(){
     char input[100];
     int correct = 0;
+    printf("Les v signifient un drapeau bien place et les %c un drapeau mal place\n", 158);
     do {
-        printf("Les v signifient un drapeau bien place et les %c un drapeau mal place\n", 158);
         printf("Souhaitez-vous recommencer ? Si oui, tapez 'Y', si non, tapez 'N'. \n");
         scanf("%s", input);
         if(strlen(input) == 1){
@@ -178,7 +178,7 @@ void mainMenu(){
 
 
     /// MESSAGE DACCUEIL
-    printf(" /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\--- DEMINEUR ---/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ \n\n\n\n");
+    printf(" /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/--- DEMINEUR ---\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ \n\n\n\n");
     /// CHOIX
     printf("Veuillez choisir l'action:\n1 - Facile\n2 - Moyen\n3 - Difficile\n4 - Personnalise\n\n");
 
@@ -304,7 +304,7 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
 
         ///On vérifie que toutes les cases ne sont pas découvertes
         if(partie->cases_restante == partie->bomb_nb){
-            printf("VICTOIRE");
+            victoire(curPos, plateau);
             fini = 1;
         }
 
