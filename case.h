@@ -40,7 +40,8 @@ void initCases(t_case*** case_tab[], int lon, int larg);
 /// FONCTION DE CREATION DE LA MATRICE DE CASES DE LONGUEUR ET DE LARGEUR PASSEES EN PARAMETRES
 t_case*** getCases(int lon, int larg, int bombs);
 
-
+/// FONCTION DE REVELATION DE LA GRILLE POUR LA FIN DE PARTIE
+void revelerGrille(t_case*** case_tab, COORD* curPos, t_plateau* plateau, int* cases_restantes);
 
 #include "case.c"
 

@@ -52,13 +52,17 @@ void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_re
 
         /// Si cette case n'est pas une bombe
         if(!isBomb(cas)){
-            /// On affiche son indice
-            printf("%d", cas->indice);
 
             /// Si cette case est un zéro
             if(cas->indice == 0){
+                /// On affiche un espace
+                printf(" ");
                 /// On découvre ses voisins grâce à la fonction dédiée
                 decouvrirVoisins(case_tab, pos, plateau, cases_restantes);
+            }
+            else {
+                /// Sinon, On affiche son indice
+                printf("%d", cas->indice);
             }
         }
         else {
@@ -172,21 +176,19 @@ t_case*** getCases(int lon, int larg, int bombs) {
     return case_tab;
 }
 
-void revelerGrille(t_case*** case_tab, t_plateau* plateau, int* cases_restantes){
+/// FONCTION DE REVELATION DE LA GRILLE POUR LA FIN DE PARTIE
+void revelerGrille(t_case*** case_tab, COORD* curPos, t_plateau* plateau, int* cases_restantes){
     int i, j;
-    for(i=0; i<plateau->col*2; i+2){
-        for(j=0; j<plateau->lig*2; j+2){
+    for(i=1; i<plateau->col*2; i=i+2){
+        for(j=1; j<plateau->lig*2; j=j+2){
             if(*cases_restantes > 0){
-                COORD* pos;
-                pos->X = i;
-                pos->Y = j;
-                printCase(case_tab, pos, plateau, cases_restantes);
+                placer_curseur(curPos, j, i);
+                printCase(case_tab, curPos, plateau, cases_restantes);
             }
             else {
                 break;
             }
         }
-        printf("\n");
     }
 }
 
