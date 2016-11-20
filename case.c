@@ -67,7 +67,7 @@ void printCase(t_case*** case_tab, COORD* pos, t_plateau* plateau, int* cases_re
         }
         else {
             /// Si c'est une bombe, on affiche une bombe
-            char bomb = 4;
+            char bomb = 207;
             printf("%c", bomb);
             placer_curseur(pos, pos->X-1, pos->Y);
         }
@@ -131,9 +131,9 @@ void initBombes(t_case*** case_tab[], int lon, int larg, int bombs){
         /// ON VERIFIE SI LA BOMBE N'EST PAS CONTRE UNE BORDURE
         int minX, minY, maxX, maxY;
         minX = x==0 ? 0 : -1;
-        maxX = x==larg-1 ? 0 : 1;
+        maxX = x==lon-1 ? 0 : 1;
         minY = y==0 ? 0 : -1;
-        maxY = y==lon-1 ? 0 : 1;
+        maxY = y==larg-1 ? 0 : 1;
 
         /// ON PARCOURT CHAQUE VOISINS DE LA BOMBE ACTUELLE
         /// ON PARCOURT LES ABSCISSES DE GAUCHES A DROITE
@@ -179,11 +179,21 @@ t_case*** getCases(int lon, int larg, int bombs) {
 /// FONCTION DE REVELATION DE LA GRILLE POUR LA FIN DE PARTIE
 void revelerGrille(t_case*** case_tab, COORD* curPos, t_plateau* plateau, int* cases_restantes){
     int i, j;
-    for(i=1; i<plateau->col*2; i=i+2){
-        for(j=1; j<plateau->lig*2; j=j+2){
+    for(i=1; i<plateau->lig*2; i=i+2){
+        for(j=1; j<plateau->col*2; j=j+2){
             if(*cases_restantes > 0){
                 placer_curseur(curPos, j, i);
-                printCase(case_tab, curPos, plateau, cases_restantes);
+                /// Si la case avait un drapeau
+                if(case_tab[curPos->Y/2][curPos->X/2]->flag){
+                    /// SI elle contenait une bombe on affiche un v pour valid
+                    if(isBomb(case_tab[curPos->Y/2][curPos->X/2]))
+                        printf("v");
+                    else
+                        printf("%c", 158);
+                }
+                else {
+                    printCase(case_tab, curPos, plateau, cases_restantes);
+                }
             }
             else {
                 break;
