@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <time.h>
 #include <unistd.h>
+#include <string.h>
+#include <math.h>
 #include "plateau.h"
 #include "case.h"
 #include "jeu.h"
