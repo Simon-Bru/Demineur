@@ -38,6 +38,9 @@ int validation(COORD* flag_tab, t_case*** case_tab[], int taille);
 /// FONCTION D'AFFICHAGE DE LA DEFAITE
 void defaite(COORD* curPos, t_plateau* plateau);
 
+/// FONCTION D'AFFICHAGE DE LA VICTOIRE
+void victoire(COORD* curPos, t_plateau* plateau);
+
 ///FONCTION DE DEMARRAGE DU JEU
 void mainMenu();
 

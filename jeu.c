@@ -155,9 +155,18 @@ int validation(COORD* flag_tab, t_case*** case_tab[], int taille){
 
 /// FONCTION D'AFFICHAGE DE LA DEFAITE
 void defaite(COORD* curPos, t_plateau* plateau){
-    /// On affiche la défaite
+    /// On se positionne en dessous du plateau
     placer_curseur(curPos, 0, plateau->lig*2+8);
     printf("BOOOOOOOM!!!\nDefaite. Vous avez marche sur une bombe !!\n");
+    /// On propose à l'utilisateur de recommencer
+    recommencer();
+}
+
+/// FONCTION D'AFFICHAGE DE LA VICTOIRE
+void victoire(COORD* curPos, t_plateau* plateau){
+    /// On se positionne en dessous du plateau
+    placer_curseur(curPos, 0, plateau->lig*2+8);
+    printf("VICTOIRE !!! :) Félicitation !\n");
     /// On propose à l'utilisateur de recommencer
     recommencer();
 }
@@ -376,10 +385,21 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
                         fini = 1;
                     }
                     break;
-                case 86:
-                    /// APUI SUR LA TOUCHE V - VALIDATION DES DRAPEAUX POSES
+                case 118:
+                    /// APUI SUR LA TOUCHE v - VALIDATION DES DRAPEAUX POSES
                     if(partie->bomb_nb-cp_flags == 0){
-                        printf("VICTOIRE? %d", validation(flag_tab, case_tab, partie->bomb_nb));
+                        /// On révèle la grille
+                        revelerGrille(case_tab, curPos, plateau, &partie->cases_restante);
+                        /// Si tous les drapeaux sont valides
+                        if(validation(flag_tab, case_tab, partie->bomb_nb)){
+                            /// On affiche la victoire
+                            victoire(curPos, plateau);
+                        }
+                        else {
+                            /// On affiche la défaite
+                            defaite(curPos, plateau);
+                        }
+                        fini = 1;
                     }
                     break;
             }
