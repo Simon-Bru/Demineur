@@ -44,6 +44,9 @@ void victoire(COORD* curPos, t_plateau* plateau);
 /// FONCTION DE LIBERATION DE MEMOIRE D'UNE MATRICE DE CASES
 void freeMatrice(t_case*** case_tab[], t_plateau* plateau);
 
+/// FONCTION DE PERSONNALISATION DE LA COULEUR
+void setColor();
+
 ///FONCTION DE DEMARRAGE DU JEU
 void mainMenu();
 

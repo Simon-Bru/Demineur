@@ -186,14 +186,11 @@ void freeMatrice(t_case*** case_tab[], t_plateau* plateau){
 
 /// FONCTION LANCANT LE MENU PRINCIPAL
 void mainMenu(){
-    /// PERSONNALISATION COULEUR
-    system("color 3");
-
-
+    system("cls");
     /// MESSAGE DACCUEIL
     printf(" /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/--- DEMINEUR ---\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\ \n\n\n\n");
     /// CHOIX
-    printf("Veuillez choisir l'action:\n1 - Facile\n2 - Moyen\n3 - Difficile\n4 - Personnalise\n\n");
+    printf("Veuillez choisir l'action:\n1 - Facile\n2 - Moyen\n3 - Difficile\n4 - Personnalise\n5 - Changer la couleur\n\n");
 
     char entree[100];
     int choix = 0;
@@ -277,6 +274,10 @@ void mainMenu(){
 
                     startGame(dimensions[0], dimensions[1], mines);
                     break;
+                case 5:
+                    setColor();
+                    mainMenu();
+                    break;
                 default:
                     /// L'ENTIER N'EST NI 1 NI 2 NI 3, ON DEMADE DE LE RE-ENTRER
                     printf("Veuillez entrer un numero valide.\n");
@@ -291,8 +292,52 @@ void mainMenu(){
     }
 }
 
+/// FONCTION DE PERSONNALISATION DE LA COULEUR
+void setColor(){
+    int i, correct;
+    char input[100], function[20], choice[2];
+    for(i=0; i<2; i++){
+        correct = 0;
+
+        if(i==0)
+            printf("Veuillez choisir la couleur d'arriere plan\n");
+        else
+            printf("Veuillez choisir la couleur du plateau\n");
+
+        printf("0: Noir \t1: Bleu \n2: Vert \t3: Aqua \n4: Rouge \t5: Violet \n6: Jaune \t7: Blanc \n8: Gris \t9: Bleu Clair\n");
+        printf("A: Vert clair \tB: Aqua clair \nC: Rouge clair \tD: Violet clair \nE: Jaune clair \tF: Blanc Brillant\n");
+
+        do {
+            scanf("%s", input);
+            if(strlen(input) == 1){
+                if(((int)input[0] > 47 && (int)input[0] < 58) ||((int)input[0] > 64 && (int)input[0] < 71)){
+                    choice[i] = input[0];
+                    correct = 1;
+                }
+                else {
+                    printf("Veuillez entrer un identifiant de couleur\n");
+                }
+            }
+            else {
+                printf("Veuillez entrer un identifiant de couleur\n");
+            }
+        } while(!correct);
+    }
+    if(choice[0] == choice[1]){
+        printf("Vous devez choisir deux couleurs differentes !! \n");
+        setColor();
+    }
+    else {
+        snprintf(function, 256, "color %c%c", choice[0], choice[1]);
+        printf("%s", function);
+        /// PERSONNALISATION COULEUR
+        system(function);
+    }
+}
+
 /// FONCTION D'INITIALISATION DES TOUCHES DIRECTIONNELLES ET DE GESTION DES EVENEMENTS
 void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
+    setColor();
     ///ON INITIALISE LA CLE TAPE AU CLAVIER
     int key = 0;
     COORD *curPos = malloc(sizeof(COORD));
