@@ -165,9 +165,12 @@ void defaite(COORD* curPos, t_plateau* plateau){
 
 /// FONCTION D'AFFICHAGE DE LA VICTOIRE
 void victoire(COORD* curPos, t_plateau* plateau){
+    /// On joue un son de trompette
+    system("powershell -c (New-Object Media.SoundPlayer 'sons/success.wav').PlaySync();");
+
     /// On se positionne en dessous du plateau
     placer_curseur(curPos, 0, plateau->lig*2+8);
-    printf("VICTOIRE !!! :) Félicitation !\n");
+    printf("VICTOIRE !!! :) Felicitation !\n");
     /// On propose à l'utilisateur de recommencer
     recommencer();
 }
@@ -338,7 +341,6 @@ void setColor(){
 
 /// FONCTION D'INITIALISATION DES TOUCHES DIRECTIONNELLES ET DE GESTION DES EVENEMENTS
 void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
-    setColor();
     ///ON INITIALISE LA CLE TAPE AU CLAVIER
     int key = 0;
     COORD *curPos = malloc(sizeof(COORD));
@@ -436,6 +438,8 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
                         placer_curseur(curPos, posX, posY);
                     }
                     else {
+                        /// On joue un son de bombe
+                        system("powershell -c (New-Object Media.SoundPlayer 'sons/boom.wav').PlaySync();");
                         /// On révèle la grille
                         revelerGrille(case_tab, curPos, plateau, &partie->cases_restante);
                         /// On affiche la défaite
@@ -455,6 +459,8 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
                             victoire(curPos, plateau);
                         }
                         else {
+                            /// On joue un son de bombe
+                            system("powershell -c (New-Object Media.SoundPlayer 'sons/boom.wav').PlaySync();");
                             /// On affiche la défaite
                             defaite(curPos, plateau);
                         }
