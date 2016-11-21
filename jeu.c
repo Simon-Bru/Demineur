@@ -171,6 +171,19 @@ void victoire(COORD* curPos, t_plateau* plateau){
     recommencer();
 }
 
+/// FONCTION DE LIBERATION DE MEMOIRE D'UNE MATRICE DE CASES
+void freeMatrice(t_case*** case_tab[], t_plateau* plateau){
+    int i, j;
+    /// ON parcourt le tableau à l'envers et désalloue au fur et a mesure
+    for(i=plateau->lig-1; i>=0; i--){
+        for(j=plateau->col-1; j>=0; j--){
+            free(case_tab[i][j]);
+        }
+        free(case_tab[i]);
+    }
+    free(case_tab);
+}
+
 /// FONCTION LANCANT LE MENU PRINCIPAL
 void mainMenu(){
     /// PERSONNALISATION COULEUR
@@ -405,4 +418,10 @@ void initKeys(t_plateau *plateau, t_case*** case_tab, t_partie* partie){
             }
         }
     }
+    /// ON LIBERE LA MEMOIRE ALLOUEE DYNAMIQUEMENT
+    freeMatrice(case_tab, plateau);
+    free(plateau);
+    free(flag_tab);
+    free(partie);
+
 }
