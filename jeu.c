@@ -60,7 +60,7 @@ void recommencer(){
     printf("Les v signifient un drapeau bien place et les %c un drapeau mal place\n", 158);
     do {
         printf("Souhaitez-vous recommencer ? Si oui, tapez 'Y', si non, tapez 'N'. \n");
-        scanf("%s", input);
+        scanf("%99s", input);
         if(strlen(input) == 1){
             if(strcmp(input, "Y") == 0){
                 correct = 1;
@@ -145,6 +145,7 @@ void removeFlagFromTab(COORD* curPos, COORD* flag_tab, int cp_flags){
 /// FONCTION DE VALIDATION DES DRAPEAUX
 int validation(COORD* flag_tab, t_case*** case_tab[], int taille){
     int i, isValid, x, y;
+    isValid = 1;
     for(i=0; i<taille; i++){
         x = flag_tab[i].X;
         y = flag_tab[i].Y;
@@ -200,7 +201,7 @@ void mainMenu(){
         choix = 0;
 
         /// ON RECUPERE L'ENTREE COMME UNE CHAINE DEPUIS LE CHAMPS DE LA CONSOLE
-        scanf("%s", entree);
+        scanf("%99s", entree);
 
         /// ON VERIFIE LA TAILLE DE LA CHAINE ENTREE
         if(strlen(entree) == 1){
@@ -240,7 +241,7 @@ void mainMenu(){
 
                         while(choix==0){
                             /// ON RECUPERE L'ENTREE COMME UNE CHAINE DEPUIS LE CHAMPS DE LA CONSOLE
-                            scanf("%s", entree);
+                            scanf("%99s", entree);
                             /// Si la chaine entree a moins de 3 caracteres
                             if(strlen(entree) < 3){
                                 /// On la converti en entier
@@ -308,7 +309,7 @@ void setColor(){
         printf("A: Vert clair \tB: Aqua clair \nC: Rouge clair \tD: Violet clair \nE: Jaune clair \tF: Blanc Brillant\n");
 
         do {
-            scanf("%s", input);
+            scanf("%99s", input);
             if(strlen(input) == 1){
                 if(((int)input[0] > 47 && (int)input[0] < 58) ||((int)input[0] > 64 && (int)input[0] < 71)){
                     choice[i] = input[0];
@@ -328,7 +329,7 @@ void setColor(){
         setColor();
     }
     else {
-        snprintf(function, 256, "color %c%c", choice[0], choice[1]);
+        snprintf(function, 20, "color %c%c", choice[0], choice[1]);
         printf("%s", function);
         /// PERSONNALISATION COULEUR
         system(function);
